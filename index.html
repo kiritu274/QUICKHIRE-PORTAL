@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickHire Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #e0f7fa, #fff);
+            font-size: 18px;
+            color: #333;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        .header {
+            background: url('https://via.placeholder.com/1400x200') no-repeat center/cover;
+            height: 200px;
+            text-align: center;
+            color: black;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            animation: fadeIn 2s ease-in;
+        }
+        .header h1 {
+            font-size: 40px;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .navbar {
+            background: linear-gradient(90deg, #007bff, #0056b3);
+            color: black;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .navbar h1 {
+            margin: 0;
+            font-size: 32px;
+            color: black;
+        }
+        .navbar .nav-links {
+            display: flex;
+            align-items: center;
+        }
+        .navbar button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            cursor: pointer;
+            margin-left: 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+        .navbar button:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+        .hamburger {
+            display: none;
+            font-size: 24px;
+            background: none;
+            border: none;
+            color: black;
+            cursor: pointer;
+        }
+        .search-bar {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .section {
+            display: none;
+            margin-top: 30px;
+        }
+        .section.active {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 450px;
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card h3 {
+            font-size: 24px;
+            margin-top: 0;
+            color: #007bff;
+        }
+        input, select, textarea, button {
+            margin: 15px 0;
+            padding: 12px;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background: linear-gradient(90deg, #28a745, #218838);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+        }
+        button:hover {
+            background: linear-gradient(90deg, #218838, #1e7e34);
+            transform: scale(1.05);
+        }
+        .job-list, .application-list, .user-list {
+            list-style: none;
+            padding: 0;
+        }
+        .job-list li, .application-list li, .user-list li {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        .job-list li:hover, .application-list li:hover, .user-list li:hover {
+            background: #f8f9fa;
+        }
+        .notification {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            margin: 15px 0;
+            display: none;
+            font-size: 16px;
+            border-radius: 5px;
+            animation: popIn 0.5s ease-out;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .progress {
+            height: 100%;
+            background: #007bff;
+            width: 0;
+            transition: width 1s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes popIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        @media (max-width: 768px) {
+            .navbar h1 {
+                font-size: 24px;
+            }
+            .navbar .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: linear-gradient(90deg, #007bff, #0056b3);
+                padding: 20px;
+                border-radius: 0 0 10px 10px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+            .navbar .nav-links.active {
+                display: flex;
+            }
+            .navbar button {
+                margin: 10px 0;
+                width: 100%;
+                text-align: left;
+            }
+            .hamburger {
+                display: block;
+            }
+            .card {
+                width: 100%;
+            }
+            .header h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Welcome to QuickHire Portal!</h1>
+        <p>Find your dream job or hire top talent today. Updated: 06:10 PM EAT, July 18, 2025.</p>
+    </div>
+    <div class="navbar">
+        <h1>QuickHire Portal</h1>
+        <button class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+        <div class="nav-links">
+            <button onclick="showSection('company')" title="Manage job postings and applicants"><i class="fas fa-briefcase"></i> Company Dashboard</button>
+            <button onclick="showSection('applicant')" title="Create profile and apply for jobs"><i class="fas fa-user"></i> Applicant Dashboard</button>
+            <button onclick="showSection('admin')" title="Manage users and generate reports"><i class="fas fa-shield-alt"></i> Admin Panel</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <input type="text" id="searchBar" class="search-bar" placeholder="Search jobs, applicants, or statuses..." onkeyup="searchContent()">
+
+        <!-- Company Dashboard -->
+        <div id="company" class="section">
+            <div class="card">
+                <h3>Post Job Opening</h3>
+                <input type="text" id="jobTitle" placeholder="Job Title (e.g., Software Engineer)">
+                <input type="text" id="jobCategory" placeholder="Category (e.g., IT, HR)">
+                <input type="text" id="jobLocation" placeholder="Location (e.g., Nairobi)">
+                <textarea id="jobDescription" placeholder="Job Description (e.g., 2+ years experience...)"></textarea>
+                <input type="date" id="jobDeadline" placeholder="Deadline">
+                <button onclick="postJob()">Post Job <i class="fas fa-paper-plane"></i></button>
+                <div class="progress-bar"><div id="jobProgress" class="progress"></div></div>
+            </div>
+            <div class="card">
+                <h3>Job Listings</h3>
+                <ul id="jobList" class="job-list"></ul>
+            </div>
+            <div class="card">
+                <h3>Applicants</h3>
+                <select id="jobFilter" onchange="filterApplicants()">
+                    <option value="">Select Job</option>
+                </select>
+                <ul id="applicantList" class="application-list"></ul>
+                <button onclick="shortlistApplicant()">Shortlist <i class="fas fa-star"></i></button>
+                <button onclick="scheduleInterview()">Schedule Interview <i class="fas fa-calendar"></i></button>
+            </div>
+        </div>
+
+        <!-- Applicant Dashboard -->
+        <div id="applicant" class="section">
+            <div class="card">
+                <h3>Create Profile</h3>
+                <input type="text" id="applicantName" placeholder="Full Name">
+                <input type="text" id="applicantSkills" placeholder="Skills (e.g., Python, Java)">
+                <input type="text" id="applicantExperience" placeholder="Experience (e.g., 3 years)">
+                <input type="file" id="cvUpload" accept=".pdf">
+                <button onclick="createProfile()">Save Profile <i class="fas fa-save"></i></button>
+            </div>
+            <div class="card">
+                <h3>Available Jobs</h3>
+                <ul id="availableJobs" class="job-list"></ul>
+                <button onclick="applyJob()">Apply <i class="fas fa-check"></i></button>
+            </div>
+            <div class="card">
+                <h3>Application Status</h3>
+                <ul id="applicationStatus" class="application-list"></ul>
+            </div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="admin" class="section">
+            <div class="card">
+                <h3>Manage Users</h3>
+                <ul id="userList" class="user-list"></ul>
+                <button onclick="removeUser()">Remove User <i class="fas fa-trash"></i></button>
+            </div>
+            <div class="card">
+                <h3>Analytics</h3>
+                <p id="analyticsReport">Total Jobs: 0 | Total Applicants: 0 | Total Applications: 0</p>
+                <button onclick="generateReport()">Generate Report <i class="fas fa-chart-bar"></i></button>
+            </div>
+            <div class="card">
+                <h3>Fraud Monitoring</h3>
+                <p id="fraudReport">No suspicious activity detected. Last check: 06:10 PM EAT, July 18, 2025.</p>
+                <button onclick="checkFraud()">Check for Fraud <i class="fas fa-shield-virus"></i></button>
+            </div>
+        </div>
+
+        <!-- Notification Area -->
+        <div id="notification" class="notification"></div>
+    </div>
+
+    <script>
+        let jobs = [];
+        let applicants = [];
+        let applications = [];
+
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+
+        function showSection(sectionId) {
+            if (sectionId === 'company' || sectionId === 'admin') {
+                const password = prompt('Enter password to access this section:');
+                if (password !== 'Kiritu27!') {
+                    alert('Incorrect password. Access denied.');
+                    return;
+                }
+            }
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            if (window.innerWidth <= 768) {
+                document.querySelector('.nav-links').classList.remove('active');
+            }
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        function postJob() {
+            const title = document.getElementById('jobTitle').value;
+            const category = document.getElementById('jobCategory').value;
+            const location = document.getElementById('jobLocation').value;
+            const description = document.getElementById('jobDescription').value;
+            const deadline = document.getElementById('jobDeadline').value;
+            if (title && description && category && location && deadline) {
+                jobs.push({ id: jobs.length + 1, title, category, location, description, deadline, applicants: [] });
+                updateJobLists();
+                showNotification('Job posted successfully!');
+                document.getElementById('jobTitle').value = '';
+                document.getElementById('jobCategory').value = '';
+                document.getElementById('jobLocation').value = '';
+                document.getElementById('jobDescription').value = '';
+                document.getElementById('jobDeadline').value = '';
+                document.getElementById('jobProgress').style.width = '100%';
+                setTimeout(() => document.getElementById('jobProgress').style.width = '0', 1000);
+            } else {
+                showNotification('Please fill in all fields.');
+            }
+        }
+
+        function updateJobLists() {
+            const jobList = document.getElementById('jobList');
+            const availableJobs = document.getElementById('availableJobs');
+            const jobFilter = document.getElementById('jobFilter');
+            jobList.innerHTML = '';
+            availableJobs.innerHTML = '';
+            jobFilter.innerHTML = '<option value="">Select Job</option>';
+            jobs.forEach(job => {
+                jobList.innerHTML += `<li>${job.title} (${job.category}) - ${job.location} (Deadline: ${job.deadline})<br>${job.description}</li>`;
+                availableJobs.innerHTML += `<li><input type="radio" name="job" value="${job.id}"> ${job.title} (${job.location})</li>`;
+                jobFilter.innerHTML += `<option value="${job.id}">${job.title} (${job.location})</option>`;
+            });
+            updateAnalytics();
+        }
+
+        function createProfile() {
+            const name = document.getElementById('applicantName').value;
+            const skills = document.getElementById('applicantSkills').value;
+            const experience = document.getElementById('applicantExperience').value;
+            const cv = document.getElementById('cvUpload').files[0];
+            if (name && skills && experience && cv) {
+                applicants.push({ id: applicants.length + 1, name, skills, experience, cv: cv.name });
+                updateUserList();
+                showNotification('Profile created successfully!');
+                document.getElementById('applicantName').value = '';
+                document.getElementById('applicantSkills').value = '';
+                document.getElementById('applicantExperience').value = '';
+                document.getElementById('cvUpload').value = '';
+            } else {
+                showNotification('Please provide all details.');
+            }
+        }
+
+        function applyJob() {
+            const selectedJob = document.querySelector('input[name="job"]:checked');
+            if (selectedJob && applicants.length > 0) {
+                const jobId = parseInt(selectedJob.value);
+                const applicantId = applicants[applicants.length - 1].id;
+                applications.push({ jobId, applicantId, status: 'Applied' });
+                jobs.find(job => job.id === jobId).applicants.push(applicantId);
+                updateApplicationStatus();
+                updateApplicantList();
+                showNotification('Application submitted!');
+            } else {
+                showNotification('Please select a job and ensure profile exists.');
+            }
+        }
+
+        function filterApplicants() {
+            const jobId = parseInt(document.getElementById('jobFilter').value);
+            const applicantList = document.getElementById('applicantList');
+            applicantList.innerHTML = '';
+            if (jobId) {
+                const job = jobs.find(j => j.id === jobId);
+                job.applicants.forEach(applicantId => {
+                    const applicant = applicants.find(a => a.id === applicantId);
+                    applicantList.innerHTML += `<li><input type="checkbox" value="${applicantId}"> ${applicant.name} (${applicant.skills})</li>`;
+                });
+            }
+        }
+
+        function shortlistApplicant() {
+            const selectedApplicants = document.querySelectorAll('#applicantList input:checked');
+            selectedApplicants.forEach(input => {
+                const applicantId = parseInt(input.value);
+                const application = applications.find(app => app.applicantId === applicantId);
+                if (application) {
+                    application.status = 'Shortlisted';
+                }
+            });
+            updateApplicationStatus();
+            showNotification('Applicants shortlisted!');
+        }
+
+        function scheduleInterview() {
+            const selectedApplicants = document.querySelectorAll('#applicantList input:checked');
+            selectedApplicants.forEach(input => {
+                const applicantId = parseInt(input.value);
+                const application = applications.find(app => app.applicantId === applicantId);
+                if (application) {
+                    application.status = 'Interview Scheduled';
+                    showNotification(`Interview scheduled for ${applicants.find(a => a.id === applicantId).name}`);
+                }
+            });
+            updateApplicationStatus();
+        }
+
+        function updateApplicationStatus() {
+            const statusList = document.getElementById('applicationStatus');
+            statusList.innerHTML = '';
+            applications.forEach(app => {
+                const job = jobs.find(j => j.id === app.jobId);
+                const applicant = applicants.find(a => a.id === app.applicantId);
+                statusList.innerHTML += `<li>${job.title} - ${applicant.name} (${applicant.skills}): ${app.status}</li>`;
+            });
+        }
+
+        function updateUserList() {
+            const userList = document.getElementById('userList');
+            userList.innerHTML = '';
+            applicants.forEach(applicant => {
+                userList.innerHTML += `<li><input type="checkbox" value="${applicant.id}"> ${applicant.name} (${applicant.experience} exp)</li>`;
+            });
+            updateAnalytics();
+        }
+
+        function removeUser() {
+            const selectedUsers = document.querySelectorAll('#userList input:checked');
+            selectedUsers.forkpEach(input => {
+                const applicantId = parseInt(input.value);
+                applicants = applicants.filter(a => a.id !== applicantId);
+                applications = applications.filter(app => app.applicantId !== applicantId);
+                jobs.forEach(job => {
+                    job.applicants = job.applicants.filter(id => id !== applicantId);
+                });
+            });
+            updateUserList();
+            updateApplicationStatus();
+            updateApplicantList();
+            showNotification('Selected users removed.');
+        }
+
+        function updateAnalytics() {
+            const report = document.getElementById('analyticsReport');
+            report.textContent = `Total Jobs: ${jobs.length} | Total Applicants: ${applicants.length} | Total Applications: ${applications.length}`;
+        }
+
+        function generateReport() {
+            showNotification('Report generated! Check analytics above.');
+        }
+
+        function checkFraud() {
+            const fraudReport = document.getElementById('fraudReport');
+            fraudReport.textContent = applicants.length > 10 ? 'Warning: High number of applicants detected. Last check: 06:10 PM EAT, July 18, 2025.' : 'No suspicious activity detected.';
+            showNotification('Fraud check completed.');
+        }
+
+        function searchContent() {
+            const searchTerm = document.getElementById('searchBar').value.toLowerCase();
+            const lists = ['jobList', 'availableJobs', 'applicantList', 'applicationStatus', 'userList'];
+            lists.forEach(listId => {
+                const list = document.getElementById(listId);
+                const items = list.getElementsByTagName('li');
+                for (let i = 0; i < items.length; i++) {
+                    const text = items[i].textContent.toLowerCase();
+                    items[i].style.display = text.includes(searchTerm) ? '' : 'none';
+                }
+            });
+        }
+
+        // Initialize
+        showSection('applicant');
+    </script>
+</body>
+</html>
