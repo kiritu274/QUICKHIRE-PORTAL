@@ -346,7 +346,28 @@
             }, 500); // Small delay to ensure smooth transition
         });
 
-        let jobs = [];
+        let jobs = [
+            { id: 1, title: "Software Engineer", category: "IT", location: "Nairobi", description: "Develop and maintain web applications. 3+ years experience in JavaScript.", deadline: "2025-08-01", applicants: [] },
+            { id: 2, title: "Data Analyst", category: "Data Science", location: "Mombasa", description: "Analyze data trends and provide insights. Proficient in Python and SQL.", deadline: "2025-08-05", applicants: [] },
+            { id: 3, title: "HR Manager", category: "Human Resources", location: "Kisumu", description: "Oversee recruitment and employee relations. 5+ years experience.", deadline: "2025-08-10", applicants: [] },
+            { id: 4, title: "Marketing Specialist", category: "Marketing", location: "Nairobi", description: "Develop marketing campaigns. Knowledge of SEO and social media.", deadline: "2025-08-15", applicants: [] },
+            { id: 5, title: "Network Administrator", category: "IT", location: "Eldoret", description: "Manage network infrastructure. Cisco certification preferred.", deadline: "2025-08-20", applicants: [] },
+            { id: 6, title: "Graphic Designer", category: "Design", location: "Nairobi", description: "Create visual content for branding. Proficient in Adobe Suite.", deadline: "2025-08-25", applicants: [] },
+            { id: 7, title: "Project Manager", category: "Management", location: "Mombasa", description: "Lead project teams to deliver on time. PMP certification required.", deadline: "2025-08-30", applicants: [] },
+            { id: 8, title: "Customer Support", category: "Customer Service", location: "Kisumu", description: "Handle customer inquiries and issues. Strong communication skills.", deadline: "2025-09-01", applicants: [] },
+            { id: 9, title: "DevOps Engineer", category: "IT", location: "Nairobi", description: "Manage CI/CD pipelines. Experience with Docker and Kubernetes.", deadline: "2025-09-05", applicants: [] },
+            { id: 10, title: "Accountant", category: "Finance", location: "Eldoret", description: "Manage financial records and reports. CPA certification required.", deadline: "2025-09-10", applicants: [] },
+            { id: 11, title: "UX Designer", category: "Design", location: "Nairobi", description: "Design user-friendly interfaces. Experience with Figma.", deadline: "2025-09-15", applicants: [] },
+            { id: 12, title: "Sales Executive", category: "Sales", location: "Mombasa", description: "Drive sales and client acquisition. 2+ years experience.", deadline: "2025-09-20", applicants: [] },
+            { id: 13, title: "Database Administrator", category: "IT", location: "Kisumu", description: "Manage and optimize databases. Proficient in MySQL.", deadline: "2025-09-25", applicants: [] },
+            { id: 14, title: "Content Writer", category: "Marketing", location: "Nairobi", description: "Create engaging content for blogs and websites.", deadline: "2025-09-30", applicants: [] },
+            { id: 15, title: "Operations Manager", category: "Management", location: "Eldoret", description: "Oversee daily operations and logistics. 5+ years experience.", deadline: "2025-10-01", applicants: [] },
+            { id: 16, title: "Mobile Developer", category: "IT", location: "Nairobi", description: "Develop mobile apps for iOS and Android. Experience with Flutter.", deadline: "2025-10-05", applicants: [] },
+            { id: 17, title: "Quality Assurance", category: "IT", location: "Mombasa", description: "Test software for bugs and performance. Experience with Selenium.", deadline: "2025-10-10", applicants: [] },
+            { id: 18, title: "Business Analyst", category: "Business", location: "Kisumu", description: "Analyze business processes and recommend solutions.", deadline: "2025-10-15", applicants: [] },
+            { id: 19, title: "Cybersecurity Analyst", category: "IT", location: "Nairobi", description: "Protect systems from cyber threats. CISSP certification preferred.", deadline: "2025-10-20", applicants: [] },
+            { id: 20, title: "Logistics Coordinator", category: "Logistics", location: "Eldoret", description: "Coordinate supply chain and delivery operations.", deadline: "2025-10-25", applicants: [] }
+        ];
         let applicants = [];
         let applications = [];
 
@@ -559,6 +580,7 @@
         }
 
         // Initialize
+        updateJobLists();
         showSection('applicant');
     </script>
 </body>
