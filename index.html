@@ -5,345 +5,212 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QuickHire Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #e0f7fa, #fff);
-            font-size: 18px;
-            color: #333;
-        }
-        .preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease-out;
-        }
-        .preloader .spinner {
-            border: 8px solid #f3f3f3;
-            border-top: 8px solid #007bff;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-        }
-        .preloader.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 30px;
-        }
-        .header {
-            background: url('https://via.placeholder.com/1400x200') no-repeat center/cover;
-            height: 200px;
-            text-align: center;
-            color: black;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            animation: fadeIn 2s ease-in;
-        }
-        .header h1 {
-            font-size: 40px;
-            margin: 0;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-        .navbar {
-            background: linear-gradient(90deg, #007bff, #0056b3);
-            color: black;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-        .navbar h1 {
-            margin: 0;
-            font-size: 32px;
-            color: black;
-        }
-        .navbar .nav-links {
-            display: flex;
-            align-items: center;
-        }
-        .navbar button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 15px 25px;
-            cursor: pointer;
-            margin-left: 15px;
-            font-size: 16px;
-            border-radius: 5px;
-            transition: transform 0.3s, background-color 0.3s;
-        }
-        .navbar button:hover {
-            background-color: #218838;
-            transform: scale(1.05);
-        }
-        .hamburger {
-            display: none;
-            font-size: 24px;
-            background: none;
-            border: none;
-            color: black;
-            cursor: pointer;
-        }
-        .search-bar {
-            margin: 10px 0;
-            padding: 10px;
-            width: 100%;
-            font-size: 16px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        .section {
-            display: none;
-            margin-top: 30px;
-        }
-        .section.active {
-            display: block;
-            animation: slideIn 0.5s ease-out;
-        }
-        .card {
-            background: white;
-            padding: 30px;
-            margin-bottom: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            width: 450px;
-            transition: transform 0.3s;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        .card h3 {
-            font-size: 24px;
-            margin-top: 0;
-            color: #007bff;
-        }
-        input, select, textarea, button {
-            margin: 15px 0;
-            padding: 12px;
-            width: 100%;
-            box-sizing: border-box;
-            font-size: 16px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        button {
-            background: linear-gradient(90deg, #28a745, #218838);
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: background 0.3s, transform 0.3s;
-        }
-        button:hover {
-            background: linear-gradient(90deg, #218838, #1e7e34);
-            transform: scale(1.05);
-        }
-        .job-list, .application-list, .user-list {
-            list-style: none;
-            padding: 0;
-        }
-        .job-list li, .application-list li, .user-list li {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-            font-size: 16px;
-            transition: background 0.3s;
-        }
-        .job-list li:hover, .application-list li:hover, .user-list li:hover {
-            background: #f8f9fa;
-        }
-        .notification {
-            background-color: #d4edda;
-            color: #155724;
-            padding: 15px;
-            margin: 15px 0;
-            display: none;
-            font-size: 16px;
-            border-radius: 5px;
-            animation: popIn 0.5s ease-out;
-        }
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background: #e9ecef;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 10px 0;
-        }
-        .progress {
-            height: 100%;
-            background: #007bff;
-            width: 0;
-            transition: width 1s;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes slideIn {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        @keyframes popIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        @media (max-width: 768px) {
-            .navbar h1 {
-                font-size: 24px;
-            }
-            .navbar .nav-links {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: linear-gradient(90deg, #007bff, #0056b3);
-                padding: 20px;
-                border-radius: 0 0 10px 10px;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            }
-            .navbar .nav-links.active {
-                display: flex;
-            }
-            .navbar button {
-                margin: 10px 0;
-                width: 100%;
-                text-align: left;
-            }
-            .hamburger {
-                display: block;
-            }
-            .card {
-                width: 100%;
-            }
-            .header h1 {
-                font-size: 28px;
-            }
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="preloader" id="preloader">
-        <div class="spinner"></div>
-    </div>
-    <div class="header">
-        <h1>Welcome to QuickHire Portal!</h1>
-        <p>Find your dream job or hire top talent today. Updated: 06:27 PM EAT, July 18, 2025.</p>
-    </div>
-    <div class="navbar">
-        <h1>QuickHire Portal</h1>
-        <button class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
-        <div class="nav-links">
-            <button onclick="showSection('company')" title="Manage job postings and applicants"><i class="fas fa-briefcase"></i> Company Dashboard</button>
-            <button onclick="showSection('applicant')" title="Create profile and apply for jobs"><i class="fas fa-user"></i> Applicant Dashboard</button>
-            <button onclick="showSection('admin')" title="Manage users and generate reports"><i class="fas fa-shield-alt"></i> Admin Panel</button>
-        </div>
+<body class="font-sans text-gray-800 bg-gradient-to-br from-cyan-50 to-white min-h-screen flex flex-col">
+    <div id="preloader" class="fixed inset-0 bg-white flex items-center justify-center z-50 transition-opacity duration-500">
+        <div class="w-12 h-12 border-4 border-t-blue-500 border-gray-200 rounded-full animate-spin"></div>
     </div>
 
-    <div class="container">
-        <input type="text" id="searchBar" class="search-bar" placeholder="Search jobs, applicants, or statuses..." onkeyup="searchContent()">
+    <header class="bg-cover bg-center h-48 text-center text-gray-900 py-6 rounded-b-xl shadow-lg" style="background-image: url('https://via.placeholder.com/1400x200')">
+        <h1 class="text-4xl md:text-5xl font-bold drop-shadow-md">Welcome to QuickHire Portal!</h1>
+        <p class="mt-2 text-lg">Find your dream job or hire top talent today. Updated: 10:50 AM EAT, July 20, 2025.</p>
+    </header>
+
+    <nav class="bg-gradient-to-r from-blue-500 to-blue-700 text-white p-4 flex justify-between items-center rounded-xl shadow-md mx-4 mt-4">
+        <h1 class="text-2xl md:text-3xl font-semibold">QuickHire Portal</h1>
+        <button class="md:hidden text-2xl focus:outline-none" onclick="toggleMenu()" aria-label="Toggle Menu">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="nav-links hidden md:flex space-x-4" id="navLinks">
+            <button onclick="showSection('company')" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md transition-transform hover:scale-105 flex items-center" title="Manage job postings and applicants">
+                <i class="fas fa-briefcase mr-2"></i> Company Dashboard
+            </button>
+            <button onclick="showSection('applicant')" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md transition-transform hover:scale-105 flex items-center" title="Create profile and apply for jobs">
+                <i class="fas fa-user mr-2"></i> Applicant Dashboard
+            </button>
+            <button onclick="showSection('admin')" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md transition-transform hover:scale-105 flex items-center" title="Manage users and generate reports">
+                <i class="fas fa-shield-alt mr-2"></i> Admin Panel
+            </button>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-6 flex-1">
+        <input type="text" id="searchBar" class="w-full p-3 rounded-md border border-gray-300 mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Search jobs, applicants, or statuses..." onkeyup="debouncedSearch()">
 
         <!-- Company Dashboard -->
-        <div id="company" class="section">
-            <div class="card">
-                <h3>Post Job Opening</h3>
-                <input type="text" id="jobTitle" placeholder="Job Title (e.g., Software Engineer)">
-                <input type="text" id="jobCategory" placeholder="Category (e.g., IT, HR)">
-                <input type="text" id="jobLocation" placeholder="Location (e.g., Nairobi)">
-                <textarea id="jobDescription" placeholder="Job Description (e.g., 2+ years experience...)"></textarea>
-                <input type="date" id="jobDeadline" placeholder="Deadline">
-                <button onclick="postJob()">Post Job <i class="fas fa-paper-plane"></i></button>
-                <div class="progress-bar"><div id="jobProgress" class="progress"></div></div>
+        <section id="company" class="section hidden" aria-label="Company Dashboard">
+            <div class="bg-white p-6 rounded-xl shadow-md mb-6 max-w-lg">
+                <h3 class="text-2xl font-semibold text-blue-500">Post Job Opening</h3>
+                <input type="text" id="jobTitle" class="w-full p-3 border rounded-md mb-4" placeholder="Job Title (e.g., Software Engineer)" required>
+                <input type="text" id="jobCategory" class="w-full p-3 border rounded-md mb-4" placeholder="Category (e.g., IT, HR)" required>
+                <input type="text" id="jobLocation" class="w-full p-3 border rounded-md mb-4" placeholder="Location (e.g., Nairobi)" required>
+                <textarea id="jobDescription" class="w-full p-3 border rounded-md mb-4" placeholder="Job Description (e.g., 2+ years experience...)" required></textarea>
+                <input type="date" id="jobDeadline" class="w-full p-3 border rounded-md mb-4" required>
+                <button onclick="postJob()" class="w-full bg-gradient-to-r from-green-500 to-green-600 text-white p-3 rounded-md hover:from-green-600 hover:to-green-700 transition-transform hover:scale-105">
+                    Post Job <i class="fas fa-paper-plane ml-2"></i>
+                </button>
+                <div class="w-full h-5 bg-gray-200 rounded-full overflow-hidden mt-4">
+                    <div id="jobProgress" class="h-full bg-blue-500 transition-all duration-1000"></div>
+                </div>
             </div>
-            <div class="card">
-                <h3>Job Listings</h3>
+            <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+                <h3 class="text-2xl font-semibold text-blue-500">Job Listings</h3>
                 <ul id="jobList" class="job-list"></ul>
             </div>
-            <div class="card">
-                <h3>Applicants</h3>
-                <select id="jobFilter" onchange="filterApplicants()">
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h3 class="text-2xl font-semibold text-blue-500">Applicants</h3>
+                <select id="jobFilter" onchange="filterApplicants()" class="w-full p-3 border rounded-md mb-4">
                     <option value="">Select Job</option>
                 </select>
                 <ul id="applicantList" class="application-list"></ul>
-                <button onclick="shortlistApplicant()">Shortlist <i class="fas fa-star"></i></button>
-                <button onclick="scheduleInterview()">Schedule Interview <i class="fas fa-calendar"></i></button>
+                <div class="flex space-x-4">
+                    <button onclick="shortlistApplicant()" class="bg-green-500 hover:bg-green-600 text-white p-3 rounded-md flex-1 transition-transform hover:scale-105">
+                        Shortlist <i class="fas fa-star ml-2"></i>
+                    </button>
+                    <button onclick="scheduleInterview()" class="bg-green-500 hover:bg-green-600 text-white p-3 rounded-md flex-1 transition-transform hover:scale-105">
+                        Schedule Interview <i class="fas fa-calendar ml-2"></i>
+                    </button>
+                </div>
             </div>
-        </div>
+        </section>
 
         <!-- Applicant Dashboard -->
-        <div id="applicant" class="section">
-            <div class="card">
-                <h3>Create Profile</h3>
-                <input type="text" id="applicantName" placeholder="Full Name">
-                <input type="text" id="applicantSkills" placeholder="Skills (e.g., Python, Java)">
-                <input type="text" id="applicantExperience" placeholder="Experience (e.g., 3 years)">
-                <input type="file" id="cvUpload" accept=".pdf">
-                <button onclick="createProfile()">Save Profile <i class="fas fa-save"></i></button>
+        <section id="applicant" class="section" aria-label="Applicant Dashboard">
+            <div class="bg-white p-6 rounded-xl shadow-md mb-6 max-w-lg">
+                <h3 class="text-2xl font-semibold text-blue-500">Your Profile <span id="verificationStatus" class="text-red-500 font-bold">Unverified</span></h3>
+                <input type="text" id="applicantName" class="w-full p-3 border rounded-md mb-4" placeholder="Full Name" required>
+                <input type="text" id="applicantSkills" class="w-full p-3 border rounded-md mb-4" placeholder="Skills (e.g., Python, Java)" required>
+                <input type="text" id="applicantExperience" class="w-full p-3 border rounded-md mb-4" placeholder="Experience (e.g., 3 years)" required>
+                <input type="file" id="cvUpload" class="w-full p-3 border rounded-md mb-4" accept=".pdf" required>
+                <button onclick="createProfile()" class="w-full bg-gradient-to-r from-green-500 to-green-600 text-white p-3 rounded-md hover:from-green-600 hover:to-green-700 transition-transform hover:scale-105">
+                    Save Profile <i class="fas fa-save ml-2"></i>
+                </button>
+                <h4 class="text-lg font-semibold mt-4">Verify Your Account</h4>
+                <p>Pay KSH 100 via M-Pesa to verify your account and unlock premium features.</p>
+                <input type="text" id="mpesaPhone" class="w-full p-3 border rounded-md mb-4" placeholder="Enter M-Pesa Phone Number (e.g., +254712345678)">
+                <button onclick="initiateMpesaPayment()" class="w-full bg-gradient-to-r from-green-500 to-green-600 text-white p-3 rounded-md hover:from-green-600 hover:to-green-700 transition-transform hover:scale-105">
+                    Pay KSH 100 <i class="fas fa-mobile-alt ml-2"></i>
+                </button>
+                <div class="w-full h-5 bg-gray-200 rounded-full overflow-hidden mt-4">
+                    <div id="paymentProgress" class="h-full bg-blue-500 transition-all duration-1000"></div>
+                </div>
             </div>
-            <div class="card">
-                <h3>Available Jobs</h3>
+            <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+                <h3 class="text-2xl font-semibold text-blue-500">Available Jobs</h3>
                 <ul id="availableJobs" class="job-list"></ul>
-                <button onclick="applyJob()">Apply <i class="fas fa-check"></i></button>
+                <button onclick="applyJob()" class="w-full bg-gradient-to-r from-green-500 to-green-600 text-white p-3 rounded-md hover:from-green-600 hover:to-green-700 transition-transform hover:scale-105">
+                    Apply <i class="fas fa-check ml-2"></i>
+                </button>
             </div>
-            <div class="card">
-                <h3>Application Status</h3>
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h3 class="text-2xl font-semibold text-blue-500">Application Status</h3>
                 <ul id="applicationStatus" class="application-list"></ul>
             </div>
-        </div>
+        </section>
 
-        <!-- Admin Panel -->
-        <div id="admin" class="section">
-            <div class="card">
-                <h3>Manage Users</h3>
+        <!-- Admin esquePanel -->
+        <section id="admin" class="section hidden" aria-label="Admin Panel">
+            <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+                <h3 class="text-2xl font-semibold text-blue-500">Manage Users</h3>
                 <ul id="userList" class="user-list"></ul>
-                <button onclick="removeUser()">Remove User <i class="fas fa-trash"></i></button>
+                <button onclick="removeUser()" class="w-full bg-red-500 hover:bg-red-600 text-white p-3 rounded-md transition-transform hover:scale-105">
+                    Remove User <i class="fas fa-trash ml-2"></i>
+                </button>
             </div>
-            <div class="card">
-                <h3>Analytics</h3>
-                <p id="analyticsReport">Total Jobs: 0 | Total Applicants: 0 | Total Applications: 0</p>
-                <button onclick="generateReport()">Generate Report <i class="fas fa-chart-bar"></i></button>
+            <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+                <h3 class="text-2xl font-semibold text-blue-500">Analytics</h3>
+                <p id="analyticsReport">Total Jobs: 0 | Total Applicants: 0 | Total Applications: 0 | Verified Users: 0</p>
+                <button onclick="generateReport()" class="w-full bg-green-500 hover:bg-green-600 text-white p-3 rounded-md transition-transform hover:scale-105">
+                    Generate Report <i class="fas fa-chart-bar ml-2"></i>
+                </button>
             </div>
-            <div class="card">
-                <h3>Fraud Monitoring</h3>
-                <p id="fraudReport">No suspicious activity detected. Last check: 06:27 PM EAT, July 18, 2025.</p>
-                <button onclick="checkFraud()">Check for Fraud <i class="fas fa-shield-virus"></i></button>
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h3 class="text-2xl font-semibold text-blue-500">Fraud Monitoring</h3>
+                <p id="fraudReport">No suspicious activity detected. Last check: 10:50 AM EAT, July 20, 2025.</p>
+                <button onclick="checkFraud()" class="w-full bg-green-500 hover:bg-green-600 text-white p-3 rounded-md transition-transform hover:scale-105">
+                    Check for Fraud <i class="fas fa-shield-virus ml-2"></i>
+                </button>
             </div>
-        </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="bg-gray-100 p-6 rounded-xl mb-6">
+            <h2 class="text-3xl font-semibold text-blue-500 text-center">What Our Users Say</h2>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-white p-4 rounded-md shadow-md">
+                    <p>"QuickHire helped me land my dream job in just two weeks!"</p>
+                    <p class="font-semibold">- Jane W., Software Developer</p>
+                </div>
+                <div class="bg-white p-4 rounded-md shadow-md">
+                    <p>"The verification process was seamless, and it gave my profile more credibility."</p>
+                    <p class="font-semibold">- John K., Data Analyst</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="bg-gray-100 p-6 rounded-xl mb-6">
+            <h2 class="text-3xl font-semibold text-blue-500 text-center">Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h4 class="text-lg font-semibold text-blue-500 cursor-pointer" onclick="toggleFAQ(this)">How do I verify my account?</h4>
+                <p class="hidden mt-2">Pay KSH 100 via M-Pesa in the Applicant Dashboard to verify your account. You'll receive a confirmation once the payment is processed.</p>
+            </div>
+            <div class="faq-item">
+                <h4 class="text-lg font-semibold text-blue-500 cursor-pointer" onclick="toggleFAQ(this)">What are the benefits of verification?</h4>
+                <p class="hidden mt-2">Verified accounts appear more credible to employers and unlock premium features like priority job applications.</p>
+            </div>
+            <div class="faq-item">
+                <h4 class="text-lg font-semibold text-blue-500 cursor-pointer" onclick="toggleFAQ(this)">How secure is the payment process?</h4>
+                <p class="hidden mt-2">We use M-Pesa's secure STK Push API, ensuring your payment details are encrypted and safe.</p>
+            </div>
+        </section>
 
         <!-- Notification Area -->
-        <div id="notification" class="notification"></div>
-    </div>
+        <div id="notification" class="hidden bg-green-100 text-green-800 p-4 rounded-md mb-4 animate-pulse"></div>
+
+        <!-- Chatbot (Applicant Dashboard Only) -->
+        <div id="chatbot" class="hidden fixed bottom-24 right-4 w-80 bg-white rounded-xl shadow-lg p-4 z-50 transition-all duration-300 max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-2">
+                <h3 class="text-lg font-semibold text-blue-500">QuickHire Assistant</h3>
+                <button onclick="toggleChatbot()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="chatMessages" class="bg-gray-50 p-3 rounded-md mb-2 h-64 overflow-y-auto"></div>
+            <input type="text" id="chatInput" class="w-full p-2 border rounded-md" placeholder="Ask about jobs, status, or help..." onkeypress="if(event.key === 'Enter') sendMessage()">
+            <button onclick="sendMessage()" class="w-full bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md mt-2">Send <i class="fas fa-paper-plane ml-2"></i></button>
+        </div>
+        <button id="chatbotToggle" class="hidden fixed bottom-4 right-24 bg-blue-500 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform z-50" onclick="toggleChatbot()" title="Chat with QuickHire Assistant">
+            <i class="fas fa-robot"></i>
+        </button>
+    </main>
+
+    <footer class="bg-gradient-to-r from-blue-500 to-blue-700 text-white p-6 text-center rounded-t-xl shadow-md mt-auto">
+        <p>© 2025 QuickHire Portal. All rights reserved.</p>
+        <p>
+            <a href="mailto:support@quickhire.com" class="text-green-300 hover:underline">Contact Us</a> |
+            <a href="/privacy" class="text-green-300 hover:underline">Privacy Policy</a> |
+            <a href="/terms" class="text-green-300 hover:underline">Terms of Service</a>
+        </p>
+        <p>Follow us:
+            <a href="https://facebook.com/quickhire" class="text-green-300 hover:underline"><i class="fab fa-facebook mx-2"></i></a>
+            <a href="https://twitter.com/quickhire" class="text-green-300 hover:underline"><i class="fab fa-twitter mx-2"></i></a>
+            <a href="https://linkedin.com/company/quickhire" class="text-green-300 hover:underline"><i class="fab fa-linkedin mx-2"></i></a>
+        </p>
+    </footer>
+
+    <a href="https://wa.me/254115640806" class="fixed bottom-4 right-4 bg-green-500 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform z-50" target="_blank" title="Chat with us on WhatsApp">
+        <i class="fab fa-whatsapp fa-2x"></i>
+    </a>
 
     <script>
         // Preloader logic
         window.addEventListener('load', () => {
             const preloader = document.getElementById('preloader');
             setTimeout(() => {
-                preloader.classList.add('hidden');
-            }, 500); // Small delay to ensure smooth transition
+                preloader.classList.add('opacity-0', 'pointer-events-none');
+            }, 1000);
         });
 
         let jobs = [
@@ -370,58 +237,99 @@
         ];
         let applicants = [];
         let applications = [];
+        let verifiedApplicants = new Set();
+
+        // Mock M-Pesa Credentials (for demo purposes)
+        const mpesaCredentials = {
+            consumerKey: 'EMpO9Wm9qGuQ74cxp1qSNGjm5l0dfV6hDXUt4hEHnx9G9A6l',
+            consumerSecret: 'vrdcoalPSoSOIAcFIQHJRHGWceVFbwLUDzXZUbvYWCinzCKguOa4NZsjGKS5yuBr',
+            businessShortCode: '174379',
+            passkey: 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919',
+            apiUrl: 'https://sandbox.safaricom.co.ke'
+        };
 
         function toggleMenu() {
-            const navLinks = document.querySelector('.nav-links');
-            navLinks.classList.toggle('active');
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('hidden');
+            navLinks.classList.toggle('flex');
+            navLinks.classList.toggle('flex-col');
+            navLinks.classList.toggle('absolute');
+            navLinks.classList.toggle('top-full');
+            navLinks.classList.toggle('left-0');
+            navLinks.classList.toggle('right-0');
+            navLinks.classList.toggle('bg-gradient-to-r');
+            navLinks.classList.toggle('from-blue-500');
+            navLinks.classList.toggle('to-blue-700');
+            navLinks.classList.toggle('p-4');
+            navLinks.classList.toggle('rounded-b-xl');
+            navLinks.classList.toggle('shadow-md');
+        }
+
+        function toggleFAQ(element) {
+            const faqItem = element.parentElement;
+            faqItem.classList.toggle('active');
+            const answer = faqItem.querySelector('p');
+            answer.classList.toggle('hidden');
         }
 
         function showSection(sectionId) {
             if (sectionId === 'company' || sectionId === 'admin') {
                 const password = prompt('Enter password to access this section:');
-                if (password !== 'Kiritu27!') {
+                if (password !== 'Kiritu27!') { // Note: Hardcoded for demo; should be server-side in production
                     alert('Incorrect password. Access denied.');
                     return;
                 }
             }
             document.querySelectorAll('.section').forEach(section => {
-                section.classList.remove('active');
+                section.classList.add('hidden');
+                section.classList.remove('animate-slide-in');
             });
-            document.getElementById(sectionId).classList.add('active');
+            const targetSection = document.getElementById(sectionId);
+            targetSection.classList.remove('hidden');
+            targetSection.classList.add('animate-slide-in');
             if (window.innerWidth <= 768) {
-                document.querySelector('.nav-links').classList.remove('active');
+                document.getElementById('navLinks').classList.add('hidden');
+            }
+            // Show/hide chatbot toggle button
+            const chatbotToggle = document.getElementById('chatbotToggle');
+            if (sectionId === 'applicant') {
+                chatbotToggle.classList.remove('hidden');
+            } else {
+                chatbotToggle.classList.add('hidden');
+                document.getElementById('chatbot').classList.add('hidden');
             }
         }
 
         function showNotification(message) {
             const notification = document.getElementById('notification');
             notification.textContent = message;
-            notification.style.display = 'block';
+            notification.classList.remove('hidden');
             setTimeout(() => {
-                notification.style.display = 'none';
+                notification.classList.add('hidden');
             }, 3000);
         }
 
         function postJob() {
-            const title = document.getElementById('jobTitle').value;
-            const category = document.getElementById('jobCategory').value;
-            const location = document.getElementById('jobLocation').value;
-            const description = document.getElementById('jobDescription').value;
+            const title = document.getElementById('jobTitle').value.trim();
+            const category = document.getElementById('jobCategory').value.trim();
+            const location = document.getElementById('jobLocation').value.trim();
+            const description = document.getElementById('jobDescription').value.trim();
             const deadline = document.getElementById('jobDeadline').value;
-            if (title && description && category && location && deadline) {
-                jobs.push({ id: jobs.length + 1, title, category, location, description, deadline, applicants: [] });
-                updateJobLists();
-                showNotification('Job posted successfully!');
-                document.getElementById('jobTitle').value = '';
-                document.getElementById('jobCategory').value = '';
-                document.getElementById('jobLocation').value = '';
-                document.getElementById('jobDescription').value = '';
-                document.getElementById('jobDeadline').value = '';
-                document.getElementById('jobProgress').style.width = '100%';
-                setTimeout(() => document.getElementById('jobProgress').style.width = '0', 1000);
-            } else {
+            if (!title || !category || !location || !description || !deadline) {
                 showNotification('Please fill in all fields.');
+                return;
             }
+            jobs.push({ id: jobs.length + 1, title, category, location, description, deadline, applicants: [] });
+            updateJobLists();
+            showNotification('Job posted successfully!');
+            document.getElementById('jobTitle').value = '';
+            document.getElementById('jobCategory').value = '';
+            document.getElementById('jobLocation').value = '';
+            document.getElementById('jobDescription').value = '';
+            document.getElementById('jobDeadline').value = '';
+            const progress = document.getElementById('jobProgress');
+            progress.style.width = '100%';
+            setTimeout(() => progress.style.width = '0', 1000);
         }
 
         function updateJobLists() {
@@ -432,44 +340,105 @@
             availableJobs.innerHTML = '';
             jobFilter.innerHTML = '<option value="">Select Job</option>';
             jobs.forEach(job => {
-                jobList.innerHTML += `<li>${job.title} (${job.category}) - ${job.location} (Deadline: ${job.deadline})<br>${job.description}</li>`;
-                availableJobs.innerHTML += `<li><input type="radio" name="job" value="${job.id}"> ${job.title} (${job.location})</li>`;
+                jobList.innerHTML += `<li class="p-3 border-b">${job.title} (${job.category}) - ${job.location} (Deadline: ${job.deadline})<br>${job.description}</li>`;
+                availableJobs.innerHTML += `<li class="p-3 border-b"><input type="radio" name="job" value="${job.id}" class="mr-2">${job.title} (${job.location})</li>`;
                 jobFilter.innerHTML += `<option value="${job.id}">${job.title} (${job.location})</option>`;
             });
             updateAnalytics();
         }
 
         function createProfile() {
-            const name = document.getElementById('applicantName').value;
-            const skills = document.getElementById('applicantSkills').value;
-            const experience = document.getElementById('applicantExperience').value;
+            const name = document.getElementById('applicantName').value.trim();
+            const skills = document.getElementById('applicantSkills').value.trim();
+            const experience = document.getElementById('applicantExperience').value.trim();
             const cv = document.getElementById('cvUpload').files[0];
-            if (name && skills && experience && cv) {
-                applicants.push({ id: applicants.length + 1, name, skills, experience, cv: cv.name });
-                updateUserList();
-                showNotification('Profile created successfully!');
-                document.getElementById('applicantName').value = '';
-                document.getElementById('applicantSkills').value = '';
-                document.getElementById('applicantExperience').value = '';
-                document.getElementById('cvUpload').value = '';
-            } else {
+            if (!name || !skills || !experience || !cv) {
                 showNotification('Please provide all details.');
+                return;
+            }
+            const applicantId = applicants.length + 1;
+            applicants.push({ id: applicantId, name, skills, experience, cv: cv.name });
+            updateUserList();
+            showNotification('Profile created successfully! Verify your account to unlock premium features.');
+            document.getElementById('applicantName').value = '';
+            document.getElementById('applicantSkills').value = '';
+            document.getElementById('applicantExperience').value = '';
+            document.getElementById('cvUpload').value = '';
+        }
+
+        function initiateMpesaPayment() {
+            const phone = document.getElementById('mpesaPhone').value.trim();
+            if (!phone || !/^\+?254[0-9]{9}$/.test(phone)) {
+                showNotification('Please enter a valid Kenyan phone number (e.g., +254712345678).');
+                return;
+            }
+            if (applicants.length === 0) {
+                showNotification('Please create a profile before verifying your account.');
+                return;
+            }
+            showNotification('Initiating M-Pesa STK Push... Please check your phone for the payment prompt.');
+            const progress = document.getElementById('paymentProgress');
+            progress.style.width = '50%';
+            setTimeout(() => {
+                const mockResponse = {
+                    ResponseCode: '0',
+                    ResponseDescription: 'Success',
+                    CheckoutRequestID: 'ws_CO_123456',
+                    MerchantRequestID: '123456',
+                    CustomerMessage: 'Payment request sent successfully'
+                };
+                progress.style.width = '100%';
+                setTimeout(() => {
+                    progress.style.width = '0';
+                    handleMpesaCallback(mockResponse);
+                }, 2000);
+            }, 2000);
+        }
+
+        function handleMpesaCallback(response) {
+            if (response.ResponseCode === '0') {
+                const applicantId = applicants[applicants.length - 1].id;
+                verifiedApplicants.add(applicantId);
+                updateVerificationStatus();
+                showNotification('Payment successful! Your account is now verified.');
+            } else {
+                showNotification('Payment failed. Please try again.');
+            }
+        }
+
+        function updateVerificationStatus() {
+            const verificationStatus = document.getElementById('verificationStatus');
+            const applicantId = applicants[applicants.length - 1]?.id;
+            if (applicantId && verifiedApplicants.has(applicantId)) {
+                verificationStatus.textContent = 'Verified';
+                verificationStatus.className = 'text-green-500 font-bold';
+            } else {
+                verificationStatus.textContent = 'Unverified';
+                verificationStatus.className = 'text-red-500 font-bold';
             }
         }
 
         function applyJob() {
             const selectedJob = document.querySelector('input[name="job"]:checked');
-            if (selectedJob && applicants.length > 0) {
-                const jobId = parseInt(selectedJob.value);
-                const applicantId = applicants[applicants.length - 1].id;
-                applications.push({ jobId, applicantId, status: 'Applied' });
-                jobs.find(job => job.id === jobId).applicants.push(applicantId);
-                updateApplicationStatus();
-                updateApplicantList();
-                showNotification('Application submitted!');
-            } else {
-                showNotification('Please select a job and ensure profile exists.');
+            if (!selectedJob) {
+                showNotification('Please select a job.');
+                return;
             }
+            if (applicants.length === 0) {
+                showNotification('Please create a profile before applying.');
+                return;
+            }
+            const applicantId = applicants[applicants.length - 1].id;
+            if (!verifiedApplicants.has(applicantId)) {
+                showNotification('Please verify your account before applying for jobs.');
+                return;
+            }
+            const jobId = parseInt(selectedJob.value);
+            applications.push({ jobId, applicantId, status: 'Applied' });
+            jobs.find(job => job.id === jobId).applicants.push(applicantId);
+            updateApplicationStatus();
+            updateApplicantList();
+            showNotification('Application submitted!');
         }
 
         function filterApplicants() {
@@ -480,13 +449,18 @@
                 const job = jobs.find(j => j.id === jobId);
                 job.applicants.forEach(applicantId => {
                     const applicant = applicants.find(a => a.id === applicantId);
-                    applicantList.innerHTML += `<li><input type="checkbox" value="${applicantId}"> ${applicant.name} (${applicant.skills})</li>`;
+                    const verificationStatus = verifiedApplicants.has(applicantId) ? ' (Verified)' : ' (Unverified)';
+                    applicantList.innerHTML += `<li class="p-3 border-b"><input type="checkbox" value="${applicantId}" class="mr-2">${applicant.name} (${applicant.skills})${verificationStatus}</li>`;
                 });
             }
         }
 
         function shortlistApplicant() {
             const selectedApplicants = document.querySelectorAll('#applicantList input:checked');
+            if (selectedApplicants.length === 0) {
+                showNotification('Please select at least one applicant.');
+                return;
+            }
             selectedApplicants.forEach(input => {
                 const applicantId = parseInt(input.value);
                 const application = applications.find(app => app.applicantId === applicantId);
@@ -500,6 +474,10 @@
 
         function scheduleInterview() {
             const selectedApplicants = document.querySelectorAll('#applicantList input:checked');
+            if (selectedApplicants.length === 0) {
+                showNotification('Please select at least one applicant.');
+                return;
+            }
             selectedApplicants.forEach(input => {
                 const applicantId = parseInt(input.value);
                 const application = applications.find(app => app.applicantId === applicantId);
@@ -517,7 +495,8 @@
             applications.forEach(app => {
                 const job = jobs.find(j => j.id === app.jobId);
                 const applicant = applicants.find(a => a.id === app.applicantId);
-                statusList.innerHTML += `<li>${job.title} - ${applicant.name} (${applicant.skills}): ${app.status}</li>`;
+                const verificationStatus = verifiedApplicants.has(app.applicantId) ? ' (Verified)' : ' (Unverified)';
+                statusList.innerHTML += `<li class="p-3 border-b">${job.title} - ${applicant.name} (${applicant.skills})${verificationStatus}: ${app.status}</li>`;
             });
         }
 
@@ -525,13 +504,19 @@
             const userList = document.getElementById('userList');
             userList.innerHTML = '';
             applicants.forEach(applicant => {
-                userList.innerHTML += `<li><input type="checkbox" value="${applicant.id}"> ${applicant.name} (${applicant.experience} exp)</li>`;
+                const verificationStatus = verifiedApplicants.has(applicant.id) ? ' (Verified)' : ' (Unverified)';
+                userList.innerHTML += `<li class="p-3 border-b"><input type="checkbox" value="${applicant.id}" class="mr-2">${applicant.name} (${applicant.experience} exp)${verificationStatus}</li>`;
             });
             updateAnalytics();
+            updateVerificationStatus();
         }
 
         function removeUser() {
             const selectedUsers = document.querySelectorAll('#userList input:checked');
+            if (selectedUsers.length === 0) {
+                showNotification('Please select at least one user.');
+                return;
+            }
             selectedUsers.forEach(input => {
                 const applicantId = parseInt(input.value);
                 applicants = applicants.filter(a => a.id !== applicantId);
@@ -539,6 +524,7 @@
                 jobs.forEach(job => {
                     job.applicants = job.applicants.filter(id => id !== applicantId);
                 });
+                verifiedApplicants.delete(applicantId);
             });
             updateUserList();
             updateApplicationStatus();
@@ -546,14 +532,9 @@
             showNotification('Selected users removed.');
         }
 
-        function updateApplicantList() {
-            const jobId = parseInt(document.getElementById('jobFilter').value);
-            filterApplicants(jobId);
-        }
-
         function updateAnalytics() {
             const report = document.getElementById('analyticsReport');
-            report.textContent = `Total Jobs: ${jobs.length} | Total Applicants: ${applicants.length} | Total Applications: ${applications.length}`;
+            report.textContent = `Total Jobs: ${jobs.length} | Total Applicants: ${applicants.length} | Total Applications: ${applications.length} | Verified Users: ${verifiedApplicants.size}`;
         }
 
         function generateReport() {
@@ -562,26 +543,104 @@
 
         function checkFraud() {
             const fraudReport = document.getElementById('fraudReport');
-            fraudReport.textContent = applicants.length > 10 ? 'Warning: High number of applicants detected. Last check: 06:27 PM EAT, July 18, 2025.' : 'No suspicious activity detected.';
+            fraudReport.textContent = applicants.length > 10 ? 'Warning: High number of applicants detected. Last check: 10:50 AM EAT, July 20, 2025.' : 'No suspicious activity detected.';
             showNotification('Fraud check completed.');
         }
 
-        function searchContent() {
-            const searchTerm = document.getElementById('searchBar').value.toLowerCase();
-            const lists = ['jobList', 'availableJobs', 'applicantList', 'applicationStatus', 'userList'];
-            lists.forEach(listId => {
-                const list = document.getElementById(listId);
-                const items = list.getElementsByTagName('li');
-                for (let i = 0; i < items.length; i++) {
-                    const text = items[i].textContent.toLowerCase();
-                    items[i].style.display = text.includes(searchTerm) ? '' : 'none';
+        // Debounced search
+        let searchTimeout;
+        function debouncedSearch() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                const searchTerm = document.getElementById('searchBar').value.toLowerCase();
+                const lists = ['jobList', 'availableJobs', 'applicantList', 'applicationStatus', 'userList'];
+                lists.forEach(listId => {
+                    const list = document.getElementById(listId);
+                    const items = list.getElementsByTagName('li');
+                    for (let i = 0; i < items.length; i++) {
+                        const text = items[i].textContent.toLowerCase();
+                        items[i].style.display = text.includes(searchTerm) ? '' : 'none';
+                    }
+                });
+            }, 300);
+        }
+
+        // Chatbot functionality
+        function toggleChatbot() {
+            const chatbot = document.getElementById('chatbot');
+            chatbot.classList.toggle('hidden');
+        }
+
+        function sendMessage() {
+            const chatInput = document.getElementById('chatInput');
+            const chatMessages = document.getElementById('chatMessages');
+            const message = chatInput.value.trim().toLowerCase();
+            if (!message) return;
+
+            // Add user message
+            chatMessages.innerHTML += `<div class="bg-blue-100 p-2 rounded-md mb-2 text-right">${message}</div>`;
+            chatInput.value = '';
+
+            // Process bot response
+            setTimeout(() => {
+                let response = 'Sorry, I didn’t understand that. Try "show jobs", "check status", or "help".';
+                if (message.includes('show jobs') || message.includes('list jobs')) {
+                    response = '<strong>Available Jobs:</strong><br>' + jobs.map(job => `${job.title} (${job.location}) - ${job.description}`).join('<br>');
+                } else if (message.includes('check status') || message.includes('application status')) {
+                    if (applications.length === 0 || applicants.length === 0) {
+                        response = 'No applications found. Please create a profile and apply for a job.';
+                    } else {
+                        const applicantId = applicants[applicants.length - 1].id;
+                        const userApps = applications.filter(app => app.applicantId === applicantId);
+                        response = '<strong>Your Applications:</strong><br>' + (userApps.length > 0 ? userApps.map(app => {
+                            const job = jobs.find(j => j.id === app.jobId);
+                            return `${job.title} - Status: ${app.status}`;
+                        }).join('<br>') : 'No applications submitted yet.');
+                    }
+                } else if (message.includes('help') || message.includes('faq')) {
+                    response = '<strong>Help:</strong><br>' +
+                              '1. <strong>How do I verify my account?</strong> Pay KSH 100 via M-Pesa in the Applicant Dashboard.<br>' +
+                              '2. <strong>What are the benefits of verification?</strong> Verified accounts are more credible and unlock premium features.<br>' +
+                              '3. <strong>How secure is the payment process?</strong> We use M-Pesa’s secure STK Push API.';
                 }
-            });
+                chatMessages.innerHTML += `<div class="bg-gray-200 p-2 rounded-md mb-2">${response}</div>`;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 500);
         }
 
         // Initialize
         updateJobLists();
         showSection('applicant');
+
+        // Accessibility: Enable keyboard navigation
+        document.querySelectorAll('button, input, select, textarea').forEach(element => {
+            element.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.target.click();
+                }
+            });
+        });
     </script>
+
+    <style>
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .animate-slide-in {
+            animation: slideIn 0.5s ease-out;
+        }
+        @media (max-width: 768px) {
+            .nav-links button {
+                width: 100%;
+                text-align: left;
+                margin-bottom: 0.5rem;
+            }
+            #chatbot {
+                width: 90%;
+                right: 5%;
+            }
+        }
+    </style>
 </body>
 </html>
